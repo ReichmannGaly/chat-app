@@ -1,6 +1,7 @@
 import styles from '@/styles/Home.module.css'
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {useRouter} from "next/router";
+import Typography from "@mui/material/Typography";
 
 export default function Home() {
   const router = useRouter();
@@ -16,6 +17,8 @@ export default function Home() {
     }
   }, []);
   return (
-    <h1>Welcome!</h1>
+      <div className={styles.container}>
+        <Typography variant="h3" align="center">Welcome To Chat App</Typography>
+      </div>
   )
 }

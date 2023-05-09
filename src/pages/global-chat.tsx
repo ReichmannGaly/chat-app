@@ -1,8 +1,12 @@
 import React from 'react';
+import styles from '@/styles/GlobalChat.module.css';
+import Typography from "@mui/material/Typography";
 
 const GlobalChat = () => {
     return (
-        <h1>Global chat</h1>
+        <div className={styles.container}>
+            <Typography variant="h3" align="center">Global chat</Typography>
+        </div>
     );
 }
 
