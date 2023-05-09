@@ -91,7 +91,7 @@ const SignUp = () => {
 
         saveUser(user);
 
-        router.push('/global-chat')
+        router.push('/sign-in')
     }
 
     return (
