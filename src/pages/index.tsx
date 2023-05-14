@@ -7,10 +7,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const latestUser = storedUsers[storedUsers.length - 1];
 
-    if (latestUser) {
+    if (sessionStorage.getItem("token")) {
       router.push('/global-chat');
     } else {
       router.push('/sign-in');
@@ -18,7 +16,7 @@ export default function Home() {
   }, []);
   return (
       <div className={styles.container}>
-        <Typography variant="h3" align="center">Welcome To Chat App</Typography>
+        <Typography variant="h3" align="center">Chat App</Typography>
       </div>
   )
 }
