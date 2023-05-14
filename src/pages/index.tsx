@@ -11,7 +11,7 @@ export default function Home() {
     if (sessionStorage.getItem("token")) {
       router.push('/global-chat');
     } else {
-      router.push('/sign-in');
+      router.push('/login');
     }
   }, []);
   return (

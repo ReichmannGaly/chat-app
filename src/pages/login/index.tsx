@@ -14,13 +14,11 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useRouter} from "next/router";
 
+
 function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
         </Typography>
@@ -29,9 +27,10 @@ function Copyright() {
 
 const theme = createTheme();
 
-const SignIn = () => {
+const LogIn = () => {
     const [ email, setEmail ] = useState<string>();
     const [password, setPassword ] = useState<string>();
+
 
     const router = useRouter();
 
@@ -46,15 +45,34 @@ const SignIn = () => {
     const handleSubmit: FormEventHandler<HTMLDivElement> = (e) =>{
         e.preventDefault();
 
-        const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-        const latestUser = storedUsers[storedUsers.length - 1];
+        const loginData = {
+            email: email,
+            password: password
+        };
 
-        if(latestUser.email ==  email && latestUser.password == password){
-            router.push("/global-chat");
-        }
-        else{
-            alert("Invalid email or password. Please try again.");
-        }
+
+        fetch("http://localhost:8080/users/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(loginData)
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else if (response.status === 404) {
+                    throw new Error("User not found");
+                } else {
+                    throw new Error(`Unexpected response status: ${response.status}`);
+                }
+            })
+            .then(data => {
+                sessionStorage.setItem("token", data.user.token);
+                router.push("/global-chat");
+            })
+            .catch(error => console.error(error));
+
     }
 
     return (
@@ -127,4 +145,4 @@ const SignIn = () => {
     );
 }
 
-export default SignIn;
+export default LogIn;

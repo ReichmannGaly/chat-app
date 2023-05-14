@@ -14,20 +14,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-interface User {
-    firstName: string;
-    lastName
-    email: string;
-    password: string;
-    bio: string;
-}
-
-const saveUser = (user: User) => {
-    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    storedUsers.push(user);
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-}
-
 function Copyright() {
     return (
         <Typography variant="body2" color="text.secondary" align="center">
@@ -81,17 +67,28 @@ const SignUp = () => {
             return;
         }
 
-        const user: User = {
-            firstName: firstName,
-            lastName: lastName,
+        const user = {
             email: email,
             password: password,
+            name: `${firstName} ${lastName}`,
             bio: bio
         }
 
-        saveUser(user);
-
-        router.push('/sign-in')
+        fetch("http://localhost:8080/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+            .then(response => {
+                if (response.status === 201) {
+                    router.push("/login");
+                } else {
+                    throw new Error(`Unexpected response status: ${response.status}`);
+                }
+            })
+            .catch(error => console.error(error));
     }
 
     return (
@@ -208,7 +205,7 @@ const SignUp = () => {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/sign-in" variant="body2">
+                                <Link href="/LogIn" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>
