@@ -38,7 +38,7 @@ const LogIn = () => {
 
     const router = useRouter();
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values, { setSubmitting}) => {
 
         const loginData = {
             email: values.email,
@@ -62,10 +62,11 @@ const LogIn = () => {
                 }
             })
             .then(data => {
-                sessionStorage.setItem("token", data.user.token);
+                sessionStorage.setItem("user", JSON.stringify(data.user));
                 router.push("/global-chat");
             })
             .catch(error => console.error(error));
+        setSubmitting(false)
     }
 
     return (
@@ -90,14 +91,14 @@ const LogIn = () => {
                         initialValues={initialValues}
                         validationSchema={
                         object({
-                            email: string().required("Please enter email").email("Invalid email"),
+                            email: string().required("Please enter your email").email("Invalid email"),
                             password: string()
-                                .required("Please enter password")
+                                .required("Please enter your password")
                                 .min(8, "Password should be minimum 8 characters long"),
                         })}
                         onSubmit={handleSubmit}
                     >
-                        {({ errors, isValid, touched, dirty }) => (
+                        {({ errors, isValid, touched, dirty ,isSubmitting}) => (
                             <Form noValidate sx={{ mt: 1 }}>
                                 <Field
                                     as={TextField}
@@ -136,7 +137,7 @@ const LogIn = () => {
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
-                                    disabled={!isValid || !dirty}
+                                    disabled={!isValid || !dirty || isSubmitting}
                                 >
                                     Sign In
                                 </Button>
