@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
 
-    if (sessionStorage.getItem("token")) {
+    if (sessionStorage.getItem("user")) {
       router.push('/global-chat');
     } else {
       router.push('/login');
