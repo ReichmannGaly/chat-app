@@ -1,4 +1,4 @@
-import React, {FormEventHandler, useState} from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useRouter} from "next/router";
+import {Field, Form, Formik} from "formik";
+import {object, string} from "yup";
 
 
 function Copyright() {
@@ -27,29 +29,21 @@ function Copyright() {
 
 const theme = createTheme();
 
-const LogIn = () => {
-    const [ email, setEmail ] = useState<string>();
-    const [password, setPassword ] = useState<string>();
+const initialValues = {
+    email: "",
+    password: ""
+};
 
+const LogIn = () => {
 
     const router = useRouter();
 
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-    }
-
-    const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPassword(event.target.value);
-    }
-
-    const handleSubmit: FormEventHandler<HTMLDivElement> = (e) =>{
-        e.preventDefault();
+    const handleSubmit = (values) => {
 
         const loginData = {
-            email: email,
-            password: password
-        };
-
+            email: values.email,
+            password: values.password
+        }
 
         fetch("http://localhost:8080/users/login", {
             method: "POST",
@@ -72,7 +66,6 @@ const LogIn = () => {
                 router.push("/global-chat");
             })
             .catch(error => console.error(error));
-
     }
 
     return (
@@ -93,51 +86,70 @@ const LogIn = () => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            value={email}
-                            onChange={handleEmailChange}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/sign-up" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                    <Formik
+                        initialValues={initialValues}
+                        validationSchema={
+                        object({
+                            email: string().required("Please enter email").email("Invalid email"),
+                            password: string()
+                                .required("Please enter password")
+                                .min(8, "Password should be minimum 8 characters long"),
+                        })}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ errors, isValid, touched, dirty }) => (
+                            <Form noValidate sx={{ mt: 1 }}>
+                                <Field
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    name="email"
+                                    label="Email Adress"
+                                    autoComplete="email"
+                                    autoFocus
+                                    error={Boolean(errors.email) && Boolean(touched.email)}
+                                    helperText={touched.email && errors.email}
+                                />
+                                <Field
+                                    as={TextField}
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    label="Password"
+                                    name="password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    error={Boolean(errors.password) && Boolean(touched.password)}
+                                    helperText={touched.password && errors.password}
+                                />
+                                <FormControlLabel
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                />
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                    disabled={!isValid || !dirty}
+                                >
+                                    Sign In
+                                </Button>
+                                <Grid container>
+                                    <Grid item>
+                                        <Link href="/sign-up" variant="body2">
+                                            {"Don't have an account? Sign Up"}
+                                        </Link>
+                                    </Grid>
+                                </Grid>
+                            </Form>
+                        )}
+                    </Formik>
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
