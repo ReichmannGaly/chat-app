@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {useRouter} from "next/router";
 import {Field, Form, Formik} from "formik";
 import {object, string} from "yup";
+import {IconButton, InputAdornment} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 function Copyright() {
@@ -35,6 +37,7 @@ const initialValues = {
 };
 
 const LogIn = () => {
+    const [ showPassword, setShowPassword ] = useState<boolean>();
 
     const router = useRouter();
 
@@ -122,11 +125,24 @@ const LogIn = () => {
                                     fullWidth
                                     label="Password"
                                     name="password"
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     id="password"
                                     autoComplete="current-password"
                                     error={Boolean(errors.password) && Boolean(touched.password)}
                                     helperText={touched.password && errors.password}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    onMouseDown={(event) => event.preventDefault()}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
                                 />
                                 <FormControlLabel
                                     control={<Checkbox value="remember" color="primary" />}
