@@ -7,7 +7,9 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!sessionStorage.getItem('userToken')) {
+    const unprotectedRoutes = ['/login', '/sign-up'];
+    if (!sessionStorage.getItem('userToken') &&
+        !unprotectedRoutes.includes(router.pathname)) {
       router.push('/login');
     }
   }, [router]);
