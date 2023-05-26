@@ -66,7 +66,7 @@ const LogIn = () => {
             })
             .then(data => {
                 sessionStorage.setItem("user", JSON.stringify(data.user));
-                router.push("/global-chat");
+                router.push("/profile");
             })
             .catch(error => console.error(error));
         setSubmitting(false)

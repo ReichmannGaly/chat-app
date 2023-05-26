@@ -41,7 +41,7 @@ const SignUp = () => {
 
     const router = useRouter();
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: { email: string; password: string; firstName: string; lastName: string; bio: string; }, { setSubmitting }) => {
 
         const user = {
             email: values.email,
@@ -59,10 +59,14 @@ const SignUp = () => {
         })
             .then(response => {
                 if (response.status === 201) {
-                    router.push("/login");
+                    return response.json();
                 } else {
                     throw new Error(`Unexpected response status: ${response.status}`);
                 }
+            })
+            .then(data => {
+                sessionStorage.setItem("user", JSON.stringify(data.user));
+                router.push("/profile");
             })
             .catch(error => console.error(error));
 
