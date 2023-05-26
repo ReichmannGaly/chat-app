@@ -65,7 +65,7 @@ const SignUp = () => {
                 }
             })
             .then(data => {
-                sessionStorage.setItem("user", JSON.stringify(data.user));
+                sessionStorage.setItem("userToken", JSON.stringify(data.user.token));
                 router.push("/profile");
             })
             .catch(error => console.error(error));
