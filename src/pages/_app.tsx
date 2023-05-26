@@ -7,7 +7,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    if (!sessionStorage.getItem('user')) {
+    if (!sessionStorage.getItem('userToken')) {
       router.push('/login');
     }
   }, [router]);
