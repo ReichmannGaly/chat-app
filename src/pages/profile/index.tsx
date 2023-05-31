@@ -178,7 +178,7 @@ const Profile = () => {
                             >
                                 <Grid item xs={12} md={10}>
                                     <Typography component="h1" variant="h5">
-                                        Edit <EditIcon />
+                                        Edit your profile <EditIcon />
                                     </Typography>
                                     <Formik
                                         initialValues={initialValues}
