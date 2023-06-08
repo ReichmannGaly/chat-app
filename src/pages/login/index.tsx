@@ -66,6 +66,7 @@ const LogIn = () => {
             })
             .then(data => {
                 sessionStorage.setItem("userToken", JSON.stringify(data.user.token));
+                sessionStorage.setItem("userId", JSON.stringify(data.user.id));
                 router.push("/profile");
             })
             .catch(error => console.error(error));
