@@ -9,6 +9,7 @@ import Divider from '@mui/material/Divider';
 import Toolbar from '@mui/material/Toolbar';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+import Typography from "@mui/material/Typography";
 
 interface DrawerComponentProps {
     handleChannelsClick: () => void;
@@ -23,7 +24,11 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
                                                         }) => {
     return (
         <div>
-            <Toolbar />
+            <Toolbar>
+                <Typography variant="h6" noWrap component="div">
+                    ChatApp
+                </Typography>
+            </Toolbar>
             <Divider />
             <List>
                 <ListItem disablePadding>
