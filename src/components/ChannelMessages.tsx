@@ -68,6 +68,7 @@ const ChannelMessages: React.FC<ChannelMessagesProps> = ({channelId}) => {
                 setMessages(prevMessages => [...prevMessages, data]);
                 setInputMessage('');
             })
+            .catch(error => console.log(error))
     }
 
     if (loading) {

@@ -8,9 +8,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import {Fab, ListItemAvatar} from "@mui/material";
+import {Fab, IconButton, ListItemAvatar} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import {useRouter} from "next/router";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import EditIcon from "@mui/icons-material/Edit";
 
 const drawerWidth = 240;
 
@@ -64,7 +66,7 @@ const Channels = () => {
                     <ListItem
                         key={channel.id}
                         disablePadding>
-                        <ListItemButton onClick={() => router.push(`/channels/${channel.id}`)}>
+                        <ListItemButton onClick={() => router.push(`/channel/${channel.id}`)}>
                             <ListItemAvatar>
                                 <Avatar>
                                     {channel.name.charAt(0).toUpperCase()}
@@ -74,6 +76,11 @@ const Channels = () => {
                                 <Typography>{channel.name}</Typography>
                             </ListItemText>
                         </ListItemButton>
+                        <ListItemIcon>
+                            <IconButton edge="end" onClick={() => router.push(`/channel/edit/${channel.id}`)}>
+                                <EditIcon />
+                            </IconButton>
+                        </ListItemIcon>
                     </ListItem>
                 ))}
                 <div style={{ position: 'fixed', bottom: '40px', right: '40px' }}>
