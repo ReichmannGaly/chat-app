@@ -8,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Drawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import DrawerComponent from "@/components/DrawerComponent";
+import LogoutIcon from '@mui/icons-material/Logout';
 import {useRouter} from "next/router";
 
 interface AppBarComponentProps {
@@ -29,7 +30,7 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({drawerWidth,window,com
 
     const handleChannelsClick = () => {
         handleDrawerToggle();
-        router.push("/channels");
+        router.push("/channel");
     };
 
     const handleMessagesClick = () => {
@@ -40,6 +41,11 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({drawerWidth,window,com
     const handleProfileClick = () => {
         handleDrawerToggle();
         router.push("/profile")
+    }
+
+    const handleLogoutClick = () => {
+            sessionStorage.clear();
+            router.push("/login");
     }
 
     const drawer = (
@@ -72,9 +78,17 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({drawerWidth,window,com
                   >
                       <MenuIcon />
                   </IconButton>
-                  <Typography variant="h6" noWrap component="div">
+                  <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
                       {componentName}
                   </Typography>
+                  <IconButton
+                      color="inherit"
+                      aria-label="logout"
+                      edge="end"
+                      onClick={handleLogoutClick}
+                  >
+                      <LogoutIcon />
+                  </IconButton>
               </Toolbar>
           </AppBar>
 
