@@ -32,8 +32,8 @@ export interface User {
 
 const initialValues = {
     name: "",
-    oldPassword: "",
-    password: "",
+    currentPassword: "",
+    newPassword: "",
     bio: ""
 }
 
@@ -81,8 +81,8 @@ const Profile = () => {
 
         const requestBody = {
             name: values.name,
-            oldPassword: values.oldPassword,
-            password: values.password,
+            oldPassword: values.currentPassword,
+            password: values.newPassword,
             bio: values.bio
         }
 

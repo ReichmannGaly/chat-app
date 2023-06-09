@@ -42,15 +42,15 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                         validationSchema={
                             object({
                                 name: string().required("Please enter new name"),
-                                oldPassword: string()
-                                    .required("Please enter your old password")
+                                currentPassword: string()
+                                    .required("Please enter your current password")
                                     .min(8, "Password should be minimum 8 characters long"),
-                                password: string()
-                                    .required("Please enter your old password")
+                                newPassword: string()
+                                    .required("Please enter your new password")
                                     .min(8, "Password should be minimum 8 characters long"),
                                 confirmPassword: string()
                                     .required("Please confirm your password")
-                                    .oneOf([Yup.ref('password')], 'Passwords must match'),
+                                    .oneOf([Yup.ref('newPassword')], 'Passwords must match'),
                                 bio:  string().required("Please enter your new bio")
                             })}
                         onSubmit={handleSubmit}
@@ -61,7 +61,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                               touched,
                               dirty ,
                               isSubmitting}) => (
-                            <Form noValidate sx={{ mt: 3 }}>
+                            <Form className="editProfileForm" name="editProfileForm" noValidate sx={{ mt: 3 }}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Field
@@ -99,13 +99,13 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                                             as={TextField}
                                             required
                                             fullWidth
-                                            name="oldPassword"
-                                            label="Old Password"
+                                            name="currentPassword"
+                                            label="Current Password"
                                             type="password"
-                                            id="oldPassword"
+                                            id="currentPassword"
                                             autoComplete="new-password"
-                                            error={Boolean(errors.oldPassword) && Boolean(touched.oldPassword)}
-                                            helperText={touched.oldPassword && errors.oldPassword}
+                                            error={Boolean(errors.currentPassword) && Boolean(touched.currentPassword)}
+                                            helperText={touched.currentPassword && errors.currentPassword}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -113,13 +113,13 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                                             as={TextField}
                                             required
                                             fullWidth
-                                            name="password"
-                                            label="Password"
+                                            name="newPassword"
+                                            label="New password"
                                             type="password"
-                                            id="password"
+                                            id="newPassword"
                                             autoComplete="new-password"
-                                            error={Boolean(errors.password) && Boolean(touched.password)}
-                                            helperText={touched.password && errors.password}
+                                            error={Boolean(errors.newPassword) && Boolean(touched.newPassword)}
+                                            helperText={touched.newPassword && errors.newPassword}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -143,6 +143,7 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                                             fullWidth
                                             variant="outlined"
                                             multiline
+                                            maxRows={3}
                                             name="bio"
                                             label="Bio"
                                             id="bio"
@@ -160,6 +161,8 @@ const ProfileUpdateForm: React.FC<ProfileUpdateFormProps> = ({
                                     Cancel
                                 </Button>
                                 <Button
+                                    className="updateProfileButton"
+                                    name="updateProfileButton"
                                     type="submit"
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
