@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -103,7 +101,7 @@ const LogIn = () => {
                         onSubmit={handleSubmit}
                     >
                         {({ errors, isValid, touched, dirty ,isSubmitting}) => (
-                            <Form noValidate sx={{ mt: 1 }}>
+                            <Form noValidate sx={{ mt: 1 }} name="loginForm" className="loginForm">
                                 <Field
                                     as={TextField}
                                     variant="outlined"
@@ -145,12 +143,9 @@ const LogIn = () => {
                                         ),
                                     }}
                                 />
-                                <FormControlLabel
-                                    control={<Checkbox value="remember" color="primary" />}
-                                    label="Remember me"
-                                />
                                 <Button
                                     type="submit"
+                                    className="loginButton"
                                     fullWidth
                                     variant="contained"
                                     sx={{ mt: 3, mb: 2 }}
