@@ -44,8 +44,8 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({drawerWidth,window,com
     }
 
     const handleLogoutClick = () => {
-            sessionStorage.clear();
-            router.push("/login");
+        router.push("/login");
+        sessionStorage.clear();
     }
 
     const drawer = (
