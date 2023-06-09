@@ -28,12 +28,10 @@ function Copyright() {
 const theme = createTheme();
 
 const initialValues = {
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    name: "",
     bio: ""
 }
 
@@ -41,12 +39,12 @@ const SignUp = () => {
 
     const router = useRouter();
 
-    const handleSubmit = (values: { email: string; password: string; firstName: string; lastName: string; bio: string; }, { setSubmitting }) => {
+    const handleSubmit = (values: { email: string; password: string; name: string; bio: string; }, { setSubmitting }) => {
 
         const user = {
             email: values.email,
             password: values.password,
-            name: `${values.firstName} ${values.lastName}`,
+            name: `${values.name}`,
             bio: values.bio
         }
 
@@ -95,8 +93,7 @@ const SignUp = () => {
                         initialValues={initialValues}
                         validationSchema={
                             object({
-                                firstName: string().required("Please enter your first name"),
-                                lastName: string().required("Please enter your last name"),
+                                name: string().required("Please enter your name"),
                                 email: string().required("Please enter your email").email("Invalid email"),
                                 password: string()
                                     .required("Please enter your password")
@@ -109,9 +106,9 @@ const SignUp = () => {
                         onSubmit={handleSubmit}
                     >
                         {({ errors, isValid, touched, dirty ,isSubmitting}) => (
-                            <Form noValidate sx={{ mt: 3 }}>
+                            <Form noValidate sx={{ mt: 3 }} name="registrationForm">
                                 <Grid container spacing={2}>
-                                    <Grid item xs={12} sm={6}>
+                                    <Grid item xs={12}>
                                         <Field
                                             as={TextField}
                                             autoComplete="given-name"
@@ -119,27 +116,12 @@ const SignUp = () => {
                                             margin="normal"
                                             required
                                             fullWidth
-                                            id="firstName"
-                                            name="firstName"
-                                            label="First Name"
+                                            id="name"
+                                            name="name"
+                                            label="Name"
                                             autoFocus
-                                            error={Boolean(errors.firstName) && Boolean(touched.firstName)}
-                                            helperText={touched.firstName && errors.firstName}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <Field
-                                            as={TextField}
-                                            autoComplete="family-name"
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            id="lastName"
-                                            name="lastName"
-                                            label="Last Name"
-                                            error={Boolean(errors.lastName) && Boolean(touched.lastName)}
-                                            helperText={touched.lastName && errors.lastName}
+                                            error={Boolean(errors.name) && Boolean(touched.name)}
+                                            helperText={touched.name && errors.name}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -200,6 +182,7 @@ const SignUp = () => {
                                     </Grid>
                                 </Grid>
                                 <Button
+                                    className="registerButton"
                                     type="submit"
                                     fullWidth
                                     variant="contained"
