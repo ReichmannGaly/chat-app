@@ -8,15 +8,19 @@ import {Field, Form, Formik} from "formik";
 import {object, string} from "yup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import {Autocomplete, FormLabel, Radio, RadioGroup} from "@mui/material";
+import { FormLabel, Radio, RadioGroup} from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Button from "@mui/material/Button";
 import {FormControl} from "@mui/base";
 import {useRouter} from "next/router";
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 const initialValues = {
     channelName: ""
 }
+
+const animatedComponents = makeAnimated();
 
 const CreateChannelForm = () => {
     const [channelType, setChannelType] = useState("");
@@ -45,6 +49,10 @@ const CreateChannelForm = () => {
             })
             .catch(error => console.log(error))
     },[])
+
+    const handleChange = (selectedOptions) => {
+        setMembers(selectedOptions);
+    }
 
     const handleSubmit = (values) => {
         const requestBody = {
@@ -137,23 +145,15 @@ const CreateChannelForm = () => {
                                 </Grid>
                                 {channelType === "private" && (
                                     <Grid item xs={12}>
-                                        <Autocomplete
-                                            multiple
+                                        <Select
+                                            closeMenuOnSelect={false}
+                                            components={animatedComponents}
+                                            isMulti
                                             options={users}
+                                            placeholder="Add members"
                                             getOptionLabel={(user) => user.name}
-                                            getOptionSelected={(option, value) => option.id === value}
-                                            value={members}
-                                            onChange={(event, newValue:any) => setMembers(newValue)}
-                                            renderInput={(params) => (
-                                                <>
-                                                    <TextField
-                                                        {...params}
-                                                        variant="outlined"
-                                                        label="Add members"
-                                                        placeholder="Add members"
-                                                    />
-                                                </>
-                                            )}
+                                            getOptionValue={(user) => user.id}
+                                            onChange={handleChange}
                                         />
                                     </Grid>
                                 )}
