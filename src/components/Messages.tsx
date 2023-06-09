@@ -1,8 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import SendIcon from '@mui/icons-material/Send';
 import TextField from "@mui/material/TextField";
 import {CircularProgress} from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 interface MessagesProps {
     recipientId?: string;
@@ -90,40 +92,53 @@ const Messages: React.FC<MessagesProps> = ({recipientId}) => {
     }
 
     return (
-        <Box display="flex" flexDirection="column">
-            <Box height="100vh" flex="1" overflow="auto" p={2} ref={messagesContainerRef}>
+        <Box display="flex" flexDirection="column" height="100%">
+            <Box flex="1" overflow="auto" p={2} ref={messagesContainerRef}>
                 {messages.slice().reverse().map(message => (
                     <Box
                         key={message.id}
-                        textAlign={message.recipientId == recipientId ? 'right' : 'left' }
+                        textAlign={message.recipientId == recipientId ? 'right' : 'left'}
                         mb={2}
                     >
+                        <Box mb={1} textAlign="center">
+                            <Typography variant="subtitle2" color={"gray"}>
+                                {
+                                    new Date(message.createdAt)
+                                    .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                }
+                            </Typography>
+                        </Box>
                         <Box
                             display="inline-block"
                             p={1}
                             borderRadius={4}
                             bgcolor={message.recipientId == recipientId ? 'primary.main' : 'grey.200'}
-                            color={message.recipientId == recipientId ?'primary.contrastText' : 'inherit'}
+                            color={message.recipientId == recipientId ? 'primary.contrastText' : 'inherit'}
                         >
                             {message.content}
                         </Box>
                     </Box>
                 ))}
             </Box>
-            <Box
-                display="flex"
-                alignItems="center"
-            >
-                <Box flexGrow={1}>
-                    <TextField
-                        label="Type a message"
-                        variant="outlined"
-                        fullWidth
-                        value={inputMessage}
-                        onChange={e => setInputMessage(e.target.value)}
-                    />
+            <Box p={2}>
+                <Box display="flex" alignItems="center">
+                    <form style={{ width: "100%", display: "flex", alignItems: "center" }} onSubmit={sendMessage}>
+                        <Box flexGrow={1}>
+                            <TextField
+                                label="Type a message"
+                                variant="outlined"
+                                fullWidth
+                                value={inputMessage}
+                                onChange={e => setInputMessage(e.target.value)}
+                                multiline
+                                maxRows={2}
+                            />
+                        </Box>
+                        <Button variant="contained" type="submit" style={{ height: '100%', marginLeft: "10px" }}>
+                            <SendIcon />
+                        </Button>
+                    </form>
                 </Box>
-                <Button variant="contained" onClick={sendMessage} style={{ height: '100%' }}>Send</Button>
             </Box>
         </Box>
     );
