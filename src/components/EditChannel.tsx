@@ -82,7 +82,7 @@ const EditChannel: React.FC<EditChannelProps> = ({channelId}) => {
                 <Typography component="h1" variant="h5">
                     Add members  <PersonAddAlt1Icon />
                 </Typography>
-                <form onSubmit={handleSubmit}>
+                <form className="editChannelForm" name="editChannelForm" onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} mt={3}>
                             <Autocomplete
@@ -106,6 +106,7 @@ const EditChannel: React.FC<EditChannelProps> = ({channelId}) => {
                         </Grid>
                         <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
                             <Button
+                                className="editChannelButton"
                                 type="submit"
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
