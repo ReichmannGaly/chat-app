@@ -38,7 +38,7 @@ const ChannelMessage = () => {
     },[id])
 
     return(
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', height: "90vh" }}>
             <CssBaseline />
             <AppBarComponent
                 drawerWidth={drawerWidth}
@@ -51,7 +51,7 @@ const ChannelMessage = () => {
                     width: { sm: `calc(100% - ${drawerWidth}px)` } }}
             >
                 <Toolbar />
-                <Grid container sx={{marginTop: 2}}>
+                <Grid container sx={{marginTop: 2, height: "100%"}}>
                     <Box sx={{ height: "100%", width: "100%" }}>
                         <ChannelMessages channelId={id as string}/>
                     </Box>
