@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import {CircularProgress} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import SendIcon from "@mui/icons-material/Send";
 
 export interface ChannelMessagesProps {
     channelId: string;
@@ -13,6 +15,8 @@ const ChannelMessages: React.FC<ChannelMessagesProps> = ({channelId}) => {
     const [inputMessage, setInputMessage] = useState('');
     const messagesContainerRef = useRef<HTMLDivElement>();
     const [loading, setLoading] = useState(true);
+    const [currentUserId, setCurrentUserId] = useState<number>() ;
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
         if (channelId) {
@@ -36,12 +40,45 @@ const ChannelMessages: React.FC<ChannelMessagesProps> = ({channelId}) => {
                 })
                 .catch(error => {
                     console.error(error);
-                    setLoading(false);
                 })
         }
+
+        fetch("http://localhost:8080/user",{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem("userToken"))}`
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error(`Unexpected response status: ${response.status}`)
+                }
+            })
+            .then(data => setCurrentUserId(data.user.id))
+
+        fetch("http://localhost:8080/users",{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${JSON.parse(sessionStorage.getItem("userToken"))}`
+            }
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json();
+                } else {
+                    throw new Error(`Unexpected response status: ${response.status}`)
+                }
+            })
+            .then(data => setUsers(data.users))
     }, [channelId, messages])
 
-    const sendMessage = () => {
+    const sendMessage = (e) => {
+        e.preventDefault()
+
         const newMessage = {
             channelId: channelId,
             content: inputMessage,
@@ -86,40 +123,65 @@ const ChannelMessages: React.FC<ChannelMessagesProps> = ({channelId}) => {
     }
 
     return (
-        <Box display="flex" flexDirection="column">
-            <Box height="100vh" flex="1" overflow="auto" p={2} ref={messagesContainerRef}>
-                {messages.slice().reverse().map(message => (
-                    <Box
-                        key={message.id}
-                        textAlign={message.senderId != JSON.stringify(sessionStorage.getItem("userId")) ? 'left' : 'right' }
-                        mb={2}
-                    >
+        <Box display="flex" flexDirection="column" height="100%">
+            <Box flex="1" overflow="auto" p={2} ref={messagesContainerRef}>
+                {messages.slice().reverse().map(message => {
+                    const senderUser = users.find(user => user.id === message.senderId)
+
+                    return (
                         <Box
-                            display="inline-block"
-                            p={1}
-                            borderRadius={4}
-                            bgcolor={message.senderId != JSON.stringify(sessionStorage.getItem("userId")) ? 'grey.200': 'primary.main' }
-                            color={message.senderId != JSON.stringify(sessionStorage.getItem("userId")) ? 'inherit': 'primary.contrastText' }
+                            key={message.id}
+                            textAlign={message.senderId != currentUserId ? 'left' : 'right' }
+                            mb={2}
                         >
-                            {message.content}
+                            <Box mb={1} textAlign="center">
+                                <Typography variant="subtitle2" color={"gray"}>
+                                    {
+                                        new Date(message.createdAt)
+                                            .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                                    }
+                                </Typography>
+                            </Box>
+                            {senderUser && senderUser.id === message.senderId && (
+                                <Box mb={1} textAlign="left">
+                                    <Typography variant="subtitle2" color={"gray"}>
+                                        {senderUser.name}
+                                    </Typography>
+                                </Box>
+                            )}
+                            <Box
+                                display="inline-block"
+                                p={1}
+                                borderRadius={4}
+                                bgcolor={message.senderId != currentUserId ? 'grey.200': 'primary.main' }
+                                color={message.senderId != currentUserId ? 'inherit': 'primary.contrastText' }
+                            >
+                                {message.content}
+                            </Box>
                         </Box>
-                    </Box>
-                ))}
+                )})}
             </Box>
-            <Box
-                display="flex"
-                alignItems="center"
-            >
-                <Box flexGrow={1}>
-                    <TextField
-                        label="Type a message"
-                        variant="outlined"
-                        fullWidth
-                        value={inputMessage}
-                        onChange={e => setInputMessage(e.target.value)}
-                    />
+            <Box p={2}>
+                <Box display="flex" alignItems="center">
+                    <form style={{ width: "100%", display: "flex", alignItems: "center" }} onSubmit={sendMessage}>
+                        <Box flexGrow={1}>
+                            <TextField
+                                name="message"
+                                className="message"
+                                label="Type a message"
+                                variant="outlined"
+                                fullWidth
+                                value={inputMessage}
+                                onChange={e => setInputMessage(e.target.value)}
+                                multiline
+                                maxRows={2}
+                            />
+                        </Box>
+                        <Button className="sendMessageButton" variant="contained" type="submit" style={{ height: '100%', marginLeft: "10px" }}>
+                            <SendIcon />
+                        </Button>
+                    </form>
                 </Box>
-                <Button variant="contained" onClick={sendMessage} style={{ height: '100%' }}>Send</Button>
             </Box>
         </Box>
     );

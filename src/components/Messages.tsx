@@ -125,6 +125,8 @@ const Messages: React.FC<MessagesProps> = ({recipientId}) => {
                     <form style={{ width: "100%", display: "flex", alignItems: "center" }} onSubmit={sendMessage}>
                         <Box flexGrow={1}>
                             <TextField
+                                name="message"
+                                className="message"
                                 label="Type a message"
                                 variant="outlined"
                                 fullWidth
@@ -134,7 +136,7 @@ const Messages: React.FC<MessagesProps> = ({recipientId}) => {
                                 maxRows={2}
                             />
                         </Box>
-                        <Button variant="contained" type="submit" style={{ height: '100%', marginLeft: "10px" }}>
+                        <Button className="sendMessageButton" variant="contained" type="submit" style={{ height: '100%', marginLeft: "10px" }}>
                             <SendIcon />
                         </Button>
                     </form>
