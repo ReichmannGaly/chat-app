@@ -86,6 +86,7 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({drawerWidth,window,com
                       aria-label="logout"
                       edge="end"
                       onClick={handleLogoutClick}
+                      className="logoutButton"
                   >
                       <LogoutIcon />
                   </IconButton>
