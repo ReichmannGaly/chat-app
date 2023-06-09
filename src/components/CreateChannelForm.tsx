@@ -103,7 +103,7 @@ const CreateChannelForm = () => {
                           touched,
                           dirty ,
                           isSubmitting}) => (
-                        <Form noValidate sx={{ mt: 3 }}>
+                        <Form noValidate sx={{ mt: 3 }} className="createChannelForm" name="createChannelForm">
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
                                     <Field
@@ -125,7 +125,7 @@ const CreateChannelForm = () => {
                                     <FormControl component="fieldset" margin="normal">
                                         <FormLabel component="legend">Channel Type</FormLabel>
                                         <RadioGroup
-                                            name="channelType"
+                                            name="type"
                                             value={channelType}
                                             onChange={(event) => setChannelType(event.target.value)}
                                             sx={{ml: 2}}
@@ -159,6 +159,7 @@ const CreateChannelForm = () => {
                                 )}
                             </Grid>
                             <Button
+                                className="createChannelButton"
                                 type="submit"
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
