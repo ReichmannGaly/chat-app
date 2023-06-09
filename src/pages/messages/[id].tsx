@@ -48,7 +48,7 @@ const UserMessage = () => {
 
 
     return(
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex' , height: "90vh"}}>
             <CssBaseline />
             <AppBarComponent
                 drawerWidth={drawerWidth}
@@ -60,7 +60,7 @@ const UserMessage = () => {
                     p: 3,
                     width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
                 <Toolbar />
-                <Grid container sx={{marginTop: 2}}>
+                <Grid container sx={{marginTop: 2, height: "100%"}}>
                     <Box sx={{ height: "100%", width: "100%" }}>
                         <Messages recipientId={id as string} />
                     </Box>
