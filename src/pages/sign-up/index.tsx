@@ -106,7 +106,7 @@ const SignUp = () => {
                         onSubmit={handleSubmit}
                     >
                         {({ errors, isValid, touched, dirty ,isSubmitting}) => (
-                            <Form noValidate sx={{ mt: 3 }} name="registrationForm">
+                            <Form noValidate sx={{ mt: 3 }} className="registrationForm" name="registrationForm">
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Field
